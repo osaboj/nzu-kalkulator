@@ -84,18 +84,12 @@
       letter-spacing: .02em;
     }
     .alert.visible { display: block; }
-    .alert--warn {
-      background: rgba(245,158,11,.1); border: 1px solid rgba(245,158,11,.25); color: #f59e0b;
-    }
-    .alert--err {
-      background: rgba(239,68,68,.08); border: 1px solid rgba(239,68,68,.2); color: #f87171;
-    }
+    .alert--warn { background: rgba(245,158,11,.1); border: 1px solid rgba(245,158,11,.25); color: #f59e0b; }
+    .alert--err  { background: rgba(239,68,68,.08);  border: 1px solid rgba(239,68,68,.2);  color: #f87171; }
 
     /* Per-unit callout */
     .per-unit {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      display: flex; align-items: center; justify-content: space-between;
       padding: 12px 24px;
       background: rgba(255,255,255,.025);
       border-bottom: 1px solid rgba(255,255,255,.06);
@@ -105,10 +99,8 @@
       letter-spacing: .08em; text-transform: uppercase; color: rgba(255,255,255,.4);
     }
     .per-unit-value {
-      font-size: 16px; font-weight: 600;
-      font-variant-numeric: tabular-nums;
-      font-family: "JetBrains Mono", monospace;
-      color: #fff;
+      font-size: 16px; font-weight: 600; font-variant-numeric: tabular-nums;
+      font-family: "JetBrains Mono", monospace; color: #fff;
     }
 
     /* Stats */
@@ -123,30 +115,63 @@
       letter-spacing: .1em; text-transform: uppercase;
       color: rgba(255,255,255,.4); margin-bottom: 5px;
     }
-    .stat-value {
-      font-size: 18px; font-weight: 600;
-      font-variant-numeric: tabular-nums; letter-spacing: -.01em;
-    }
+    .stat-value { font-size: 18px; font-weight: 600; font-variant-numeric: tabular-nums; letter-spacing: -.01em; }
     .stat-unit { font-size: 11px; font-weight: 400; color: rgba(255,255,255,.45); margin-left: 3px; }
 
     /* Sliders */
     .sliders { padding: 24px; border-bottom: 1px solid rgba(255,255,255,.06); }
-    .section-head {
-      display: flex; align-items: center; gap: 10px; margin-bottom: 20px;
-    }
+    .section-head { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
     .section-num { font-size: 10px; font-family: "JetBrains Mono", monospace; color: #e8242c; }
     .section-title { font-size: 13px; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; }
     .section-line { flex: 1; height: 1px; background: rgba(255,255,255,.08); }
 
     .slider-wrap { margin-bottom: 22px; }
     .slider-wrap:last-child { margin-bottom: 0; }
-    .slider-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
+
+    .slider-head {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 10px;
+    }
     .slider-lbl { font-size: 13px; color: rgba(255,255,255,.8); }
-    .slider-val { font-size: 13px; font-weight: 500; font-family: "JetBrains Mono", monospace; }
+
+    /* Text input + unit badge */
+    .slider-input-wrap {
+      display: flex; align-items: center; gap: 6px;
+    }
+    .slider-text-input {
+      width: 68px;
+      padding: 4px 8px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 6px;
+      color: #fff;
+      font-size: 13px; font-weight: 500;
+      font-family: "JetBrains Mono", monospace;
+      font-variant-numeric: tabular-nums;
+      text-align: right;
+      outline: none;
+      transition: border-color .15s;
+    }
+    .slider-text-input:focus {
+      border-color: #e8242c;
+      background: rgba(232,36,44,.08);
+    }
+    .slider-text-input.over {
+      border-color: #f59e0b;
+      color: #f59e0b;
+    }
+    .slider-unit {
+      font-size: 11px; font-weight: 400;
+      font-family: "JetBrains Mono", monospace;
+      color: rgba(255,255,255,.45);
+      min-width: 24px;
+    }
+
     .slider-hint {
       font-size: 10px; font-family: "JetBrains Mono", monospace;
-      color: rgba(255,255,255,.3); margin-top: 5px;
+      color: rgba(255,255,255,.3); margin-top: 6px;
     }
+
     .track-outer {
       position: relative; height: 4px; border-radius: 2px;
       background: rgba(255,255,255,.08);
@@ -201,7 +226,7 @@
     </div>
     <div class="hero-sub" id="heroSub">zadej parametry instalace</div>
     <div class="alert alert--warn" id="alertCap"></div>
-    <div class="alert alert--err" id="alertErr"></div>
+    <div class="alert alert--err"  id="alertErr"></div>
   </div>
 
   <div class="per-unit">
@@ -238,7 +263,10 @@
     <div class="slider-wrap">
       <div class="slider-head">
         <span class="slider-lbl">Počet bytových jednotek</span>
-        <span class="slider-val" id="valByt">10 BJ</span>
+        <div class="slider-input-wrap">
+          <input type="text" class="slider-text-input" id="inputByt" value="10" inputmode="numeric" />
+          <span class="slider-unit">BJ</span>
+        </div>
       </div>
       <div class="track-outer">
         <div class="track-fill" id="fillByt"></div>
@@ -249,7 +277,10 @@
     <div class="slider-wrap">
       <div class="slider-head">
         <span class="slider-lbl">Výkon FVE</span>
-        <span class="slider-val" id="valKwp">20,0 kWp</span>
+        <div class="slider-input-wrap">
+          <input type="text" class="slider-text-input" id="inputKwp" value="20" inputmode="decimal" />
+          <span class="slider-unit">kWp</span>
+        </div>
       </div>
       <div class="track-outer">
         <div class="track-fill" id="fillKwp"></div>
@@ -261,7 +292,10 @@
     <div class="slider-wrap">
       <div class="slider-head">
         <span class="slider-lbl">Baterie</span>
-        <span class="slider-val" id="valKwh">bez baterie</span>
+        <div class="slider-input-wrap">
+          <input type="text" class="slider-text-input" id="inputKwh" value="0" inputmode="numeric" />
+          <span class="slider-unit">kWh</span>
+        </div>
       </div>
       <div class="track-outer">
         <div class="track-fill" id="fillKwh"></div>
@@ -280,18 +314,17 @@
 </div>
 
 <script>
-  // NZÚ 2026 Oblast C — bytové domy (závazné pokyny 28.5.2026)
   var NZU = {
     baseKwp: 5,
-    baseAmount: 350000,    // Kč za základní systém 5 kWp
-    perKwpAbove: 40000,    // Kč za každý kWp nad 5 kWp
-    perKwh: 15000,         // Kč za kWh baterie
-    maxPerUnit: 250000,    // Kč / bytová jednotka
-    maxTotal: 4000000,     // Kč celkový strop
-    maxKwpPerUnit: 3,      // kWp / BJ
+    baseAmount: 350000,
+    perKwpAbove: 40000,
+    perKwh: 15000,
+    maxPerUnit: 250000,
+    maxTotal: 4000000,
+    maxKwpPerUnit: 3,
     minKwp: 5,
     minUnits: 2,
-    termThreshold: 1500000 // pod tímto → 10 let, nad → 15 let
+    termThreshold: 1500000
   };
 
   function fmt(n) {
@@ -300,10 +333,16 @@
   function fmtKwp(n) {
     return n.toFixed(1).replace(".", ",") + " kWp";
   }
+  function clamp(v, mn, mx) {
+    return Math.min(Math.max(v, mn), mx);
+  }
+  function parseNum(s) {
+    return parseFloat(String(s).replace(",", ".")) || 0;
+  }
 
   function calcRaw(kwp, kwh) {
-    if (kwp <= NZU.baseKwp) return NZU.baseAmount + kwh * NZU.perKwh;
-    return NZU.baseAmount + (kwp - NZU.baseKwp) * NZU.perKwpAbove + kwh * NZU.perKwh;
+    var base = kwp <= NZU.baseKwp ? NZU.baseAmount : NZU.baseAmount + (kwp - NZU.baseKwp) * NZU.perKwpAbove;
+    return base + kwh * NZU.perKwh;
   }
 
   function update() {
@@ -315,36 +354,40 @@
     var unitCap = Math.min(byt * NZU.maxPerUnit, NZU.maxTotal);
     var overKwp = kwp > maxKwp;
 
-    // Update slider fills
+    // Sync text inputs from sliders
+    document.getElementById("inputByt").value = byt;
+    document.getElementById("inputKwp").value = kwp % 1 === 0 ? kwp : kwp.toFixed(1).replace(".", ",");
+    document.getElementById("inputKwh").value = kwh;
+
+    // Fill tracks
     document.getElementById("fillByt").style.width = ((byt - 2) / 98 * 100) + "%";
     document.getElementById("fillKwp").style.width = ((kwp - 5) / 295 * 100) + "%";
     document.getElementById("fillKwp").classList.toggle("over", overKwp);
     document.getElementById("fillKwh").style.width = (kwh / 200 * 100) + "%";
+    document.getElementById("inputKwp").classList.toggle("over", overKwp);
 
-    document.getElementById("valByt").textContent = byt + " BJ";
-    document.getElementById("valKwp").textContent = fmtKwp(kwp);
-    document.getElementById("valKwh").textContent = kwh === 0 ? "bez baterie" : kwh + " kWh";
     document.getElementById("hintKwp").textContent = "max pro " + byt + " BJ: " + fmtKwp(maxKwp);
     document.getElementById("statMaxKwp").innerHTML = fmtKwp(maxKwp) + "<span class='stat-unit'></span>";
 
-    var heroNum = document.getElementById("heroNum");
-    var heroSub = document.getElementById("heroSub");
-    var alertCap = document.getElementById("alertCap");
-    var alertErr = document.getElementById("alertErr");
+    var heroNum   = document.getElementById("heroNum");
+    var heroSub   = document.getElementById("heroSub");
+    var alertCap  = document.getElementById("alertCap");
+    var alertErr  = document.getElementById("alertErr");
 
     alertCap.classList.remove("visible");
     alertErr.classList.remove("visible");
 
-    var raw = calcRaw(kwp, kwh);
+    var raw    = calcRaw(kwp, kwh);
     var capped = raw > unitCap;
     var amount = Math.min(raw, unitCap);
-    var cappedByWhat = raw > NZU.maxTotal ? "celkový strop 4 mil. Kč" : "strop " + fmt(unitCap) + " Kč (" + byt + " BJ × 250 000)";
+    var cappedByWhat = raw > NZU.maxTotal
+      ? "celkový strop 4 mil. Kč"
+      : "strop " + fmt(unitCap) + " Kč (" + byt + " BJ × 250 000)";
 
     if (overKwp) {
       alertErr.textContent = "⚠ Výkon FVE překračuje max. " + fmtKwp(maxKwp) + " (" + byt + " BJ × 3 kWp)";
       alertErr.classList.add("visible");
     }
-
     if (capped) {
       alertCap.textContent = "Dosažen " + cappedByWhat + " · zbývajících " + fmt(raw - amount) + " Kč bez NZÚ";
       alertCap.classList.add("visible");
@@ -358,25 +401,39 @@
       fmtKwp(kwp) + (kwh > 0 ? " + " + kwh + " kWh" : "") +
       " · " + byt + " BJ · splatnost max " + term + " let";
 
-    // Per-unit
     document.getElementById("perUnit").textContent = fmt(amount / byt) + " Kč / BJ";
 
-    // Stat tiles
-    var panelAmount = calcRaw(kwp, 0);
-    var batAmount = kwh * NZU.perKwh;
-    var panelCapped = Math.min(panelAmount, unitCap);
-
-    document.getElementById("statPanels").innerHTML =
-      fmt(panelCapped) + "<span class='stat-unit'>Kč</span>";
-    document.getElementById("statBattery").innerHTML =
-      (kwh > 0 ? fmt(Math.max(0, amount - panelCapped)) : "0") + "<span class='stat-unit'>Kč</span>";
-    document.getElementById("statTerm").innerHTML =
-      term + "<span class='stat-unit'>let</span>";
+    var panelCapped = Math.min(calcRaw(kwp, 0), unitCap);
+    document.getElementById("statPanels").innerHTML  = fmt(panelCapped) + "<span class='stat-unit'>Kč</span>";
+    document.getElementById("statBattery").innerHTML = (kwh > 0 ? fmt(Math.max(0, amount - panelCapped)) : "0") + "<span class='stat-unit'>Kč</span>";
+    document.getElementById("statTerm").innerHTML    = term + "<span class='stat-unit'>let</span>";
   }
 
-  document.getElementById("sliderByt").addEventListener("input", update);
-  document.getElementById("sliderKwp").addEventListener("input", update);
-  document.getElementById("sliderKwh").addEventListener("input", update);
+  // Wire text input → slider → update
+  function wireTextInput(inputId, sliderId, min, max, step) {
+    var inp = document.getElementById(inputId);
+    var sld = document.getElementById(sliderId);
+
+    function applyText() {
+      var raw = parseNum(inp.value);
+      var v = clamp(Math.round(raw / step) * step, min, max);
+      sld.value = v;
+      update();
+    }
+
+    inp.addEventListener("change", applyText);
+    inp.addEventListener("keydown", function(e) {
+      if (e.key === "Enter") { inp.blur(); }
+    });
+    inp.addEventListener("blur", applyText);
+
+    sld.addEventListener("input", update);
+  }
+
+  wireTextInput("inputByt", "sliderByt", 2,   100, 1);
+  wireTextInput("inputKwp", "sliderKwp", 5,   300, 0.5);
+  wireTextInput("inputKwh", "sliderKwh", 0,   200, 2);
+
   update();
 </script>
 </body>
