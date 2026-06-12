@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NZÚ 2026 — Bezúročný úvěr · Bytové domy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #0a0a0a;
+      color: #f5f5f5;
+      font-family: "Space Grotesk", system-ui, sans-serif;
+      font-size: 14px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 40px 16px;
+    }
+
+    .card {
+      width: min(480px, 100%);
+      background: #111;
+      border: 1px solid rgba(255,255,255,.07);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 24px;
+      border-bottom: 1px solid rgba(255,255,255,.06);
+    }
+    .brand { display: flex; align-items: center; gap: 10px; }
+    .brand-mark {
+      width: 28px; height: 28px; border-radius: 6px;
+      background: #e8242c; color: #fff;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 15px;
+    }
+    .brand-text { font-size: 13px; font-weight: 500; letter-spacing: .04em; text-transform: uppercase; }
+    .header-tag {
+      font-size: 10px; font-family: "JetBrains Mono", monospace;
+      letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,.4);
+    }
+
+    /* Hero */
+    .hero {
+      padding: 32px 24px 28px;
+      border-bottom: 1px solid rgba(255,255,255,.06);
+    }
+    .hero-label {
+      font-size: 11px; font-family: "JetBrains Mono", monospace;
+      letter-spacing: .14em; text-transform: uppercase;
+      color: rgba(255,255,255,.4); margin-bottom: 8px;
+    }
+    .hero-row { display: flex; align-items: baseline; gap: 8px; margin-bottom: 6px; }
+    .hero-number {
+      font-size: 64px; font-weight: 700; color: #e8242c;
+      letter-spacing: -.04em; line-height: .95;
+      font-variant-numeric: tabular-nums;
+    }
+    .hero-number.capped { color: #f59e0b; }
+    .hero-unit { font-size: 20px; font-weight: 500; color: rgba(255,255,255,.6); }
+    .hero-sub {
+      font-size: 12px; font-family: "JetBrains Mono", monospace;
+      color: rgba(255,255,255,.45); letter-spacing: .02em;
+    }
+
+    .alert {
+      display: none;
+      margin-top: 10px;
+      padding: 7px 12px;
+      border-radius: 8px;
+      font-size: 11px; font-family: "JetBrains Mono", monospace;
+      letter-spacing: .02em;
+    }
+    .alert.visible { display: block; }
+    .alert--warn {
+      background: rgba(245,158,11,.1); border: 1px solid rgba(245,158,11,.25); color: #f59e0b;
+    }
+    .alert--err {
+      background: rgba(239,68,68,.08); border: 1px solid rgba(239,68,68,.2); color: #f87171;
+    }
+
+    /* Per-unit callout */
+    .per-unit {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 24px;
+      background: rgba(255,255,255,.025);
+      border-bottom: 1px solid rgba(255,255,255,.06);
+    }
+    .per-unit-label {
+      font-size: 11px; font-family: "JetBrains Mono", monospace;
+      letter-spacing: .08em; text-transform: uppercase; color: rgba(255,255,255,.4);
+    }
+    .per-unit-value {
+      font-size: 16px; font-weight: 600;
+      font-variant-numeric: tabular-nums;
+      font-family: "JetBrains Mono", monospace;
+      color: #fff;
+    }
+
+    /* Stats */
+    .stats {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 1px; background: rgba(255,255,255,.06);
+      border-bottom: 1px solid rgba(255,255,255,.06);
+    }
+    .stat { background: #111; padding: 14px 18px; }
+    .stat-label {
+      font-size: 10px; font-family: "JetBrains Mono", monospace;
+      letter-spacing: .1em; text-transform: uppercase;
+      color: rgba(255,255,255,.4); margin-bottom: 5px;
+    }
+    .stat-value {
+      font-size: 18px; font-weight: 600;
+      font-variant-numeric: tabular-nums; letter-spacing: -.01em;
+    }
+    .stat-unit { font-size: 11px; font-weight: 400; color: rgba(255,255,255,.45); margin-left: 3px; }
+
+    /* Sliders */
+    .sliders { padding: 24px; border-bottom: 1px solid rgba(255,255,255,.06); }
+    .section-head {
+      display: flex; align-items: center; gap: 10px; margin-bottom: 20px;
+    }
+    .section-num { font-size: 10px; font-family: "JetBrains Mono", monospace; color: #e8242c; }
+    .section-title { font-size: 13px; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; }
+    .section-line { flex: 1; height: 1px; background: rgba(255,255,255,.08); }
+
+    .slider-wrap { margin-bottom: 22px; }
+    .slider-wrap:last-child { margin-bottom: 0; }
+    .slider-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
+    .slider-lbl { font-size: 13px; color: rgba(255,255,255,.8); }
+    .slider-val { font-size: 13px; font-weight: 500; font-family: "JetBrains Mono", monospace; }
+    .slider-hint {
+      font-size: 10px; font-family: "JetBrains Mono", monospace;
+      color: rgba(255,255,255,.3); margin-top: 5px;
+    }
+    .track-outer {
+      position: relative; height: 4px; border-radius: 2px;
+      background: rgba(255,255,255,.08);
+    }
+    .track-fill {
+      position: absolute; left: 0; top: 0; bottom: 0;
+      background: #e8242c; border-radius: 2px; pointer-events: none;
+      transition: width .05s;
+    }
+    .track-fill.over { background: #f59e0b; }
+    input[type=range] {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      -webkit-appearance: none; appearance: none;
+      background: transparent; outline: none; cursor: pointer; margin: 0;
+    }
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none; width: 18px; height: 18px;
+      border-radius: 50%; background: #fff; border: 3px solid #e8242c;
+      box-shadow: 0 1px 4px rgba(0,0,0,.5); margin-top: -7px;
+    }
+    input[type=range]::-webkit-slider-runnable-track { height: 4px; background: transparent; }
+    input[type=range]::-moz-range-thumb {
+      width: 18px; height: 18px; border-radius: 50%;
+      background: #fff; border: 3px solid #e8242c; box-shadow: 0 1px 4px rgba(0,0,0,.5);
+    }
+    input[type=range]::-moz-range-track { height: 4px; background: transparent; }
+
+    /* Disclaimer */
+    .disclaimer {
+      padding: 16px 24px;
+      font-size: 11px; font-family: "JetBrains Mono", monospace;
+      color: rgba(255,255,255,.3); line-height: 1.7;
+    }
+  </style>
+</head>
+<body>
+<div class="card">
+
+  <div class="header">
+    <div class="brand">
+      <span class="brand-mark">W</span>
+      <span class="brand-text">watt tech</span>
+    </div>
+    <div class="header-tag">NZÚ 2026 · BD · oblast C</div>
+  </div>
+
+  <div class="hero">
+    <div class="hero-label">Výše bezúročného úvěru</div>
+    <div class="hero-row">
+      <span class="hero-number" id="heroNum">—</span>
+      <span class="hero-unit">Kč</span>
+    </div>
+    <div class="hero-sub" id="heroSub">zadej parametry instalace</div>
+    <div class="alert alert--warn" id="alertCap"></div>
+    <div class="alert alert--err" id="alertErr"></div>
+  </div>
+
+  <div class="per-unit">
+    <span class="per-unit-label">Na bytovou jednotku</span>
+    <span class="per-unit-value" id="perUnit">—</span>
+  </div>
+
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-label">Za panely</div>
+      <div class="stat-value" id="statPanels">—<span class="stat-unit">Kč</span></div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Za baterii</div>
+      <div class="stat-value" id="statBattery">—<span class="stat-unit">Kč</span></div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Max. výkon BD</div>
+      <div class="stat-value" id="statMaxKwp">—<span class="stat-unit">kWp</span></div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Max. splatnost</div>
+      <div class="stat-value" id="statTerm">—<span class="stat-unit">let</span></div>
+    </div>
+  </div>
+
+  <div class="sliders">
+    <div class="section-head">
+      <span class="section-num">01</span>
+      <span class="section-title">Parametry instalace</span>
+      <span class="section-line"></span>
+    </div>
+
+    <div class="slider-wrap">
+      <div class="slider-head">
+        <span class="slider-lbl">Počet bytových jednotek</span>
+        <span class="slider-val" id="valByt">10 BJ</span>
+      </div>
+      <div class="track-outer">
+        <div class="track-fill" id="fillByt"></div>
+        <input type="range" id="sliderByt" min="2" max="100" step="1" value="10" />
+      </div>
+    </div>
+
+    <div class="slider-wrap">
+      <div class="slider-head">
+        <span class="slider-lbl">Výkon FVE</span>
+        <span class="slider-val" id="valKwp">20,0 kWp</span>
+      </div>
+      <div class="track-outer">
+        <div class="track-fill" id="fillKwp"></div>
+        <input type="range" id="sliderKwp" min="5" max="300" step="0.5" value="20" />
+      </div>
+      <div class="slider-hint" id="hintKwp"></div>
+    </div>
+
+    <div class="slider-wrap">
+      <div class="slider-head">
+        <span class="slider-lbl">Baterie</span>
+        <span class="slider-val" id="valKwh">bez baterie</span>
+      </div>
+      <div class="track-outer">
+        <div class="track-fill" id="fillKwh"></div>
+        <input type="range" id="sliderKwh" min="0" max="200" step="2" value="0" />
+      </div>
+    </div>
+
+  </div>
+
+  <div class="disclaimer">
+    NZÚ 2026 bezúročný úvěr · oblast C · bytové domy / SVJ · platné od 28.&nbsp;5.&nbsp;2026.<br>
+    Sazby: základ 350&nbsp;000&nbsp;Kč (5&nbsp;kWp) · +40&nbsp;000&nbsp;Kč/kWp nad 5&nbsp;kWp · 15&nbsp;000&nbsp;Kč/kWh baterie.<br>
+    Strop: 250&nbsp;000&nbsp;Kč/BJ · max 4&nbsp;000&nbsp;000&nbsp;Kč celkem · min 2 byty připojeny.
+  </div>
+
+</div>
+
+<script>
+  // NZÚ 2026 Oblast C — bytové domy (závazné pokyny 28.5.2026)
+  var NZU = {
+    baseKwp: 5,
+    baseAmount: 350000,    // Kč za základní systém 5 kWp
+    perKwpAbove: 40000,    // Kč za každý kWp nad 5 kWp
+    perKwh: 15000,         // Kč za kWh baterie
+    maxPerUnit: 250000,    // Kč / bytová jednotka
+    maxTotal: 4000000,     // Kč celkový strop
+    maxKwpPerUnit: 3,      // kWp / BJ
+    minKwp: 5,
+    minUnits: 2,
+    termThreshold: 1500000 // pod tímto → 10 let, nad → 15 let
+  };
+
+  function fmt(n) {
+    return new Intl.NumberFormat("cs-CZ").format(Math.round(n));
+  }
+  function fmtKwp(n) {
+    return n.toFixed(1).replace(".", ",") + " kWp";
+  }
+
+  function calcRaw(kwp, kwh) {
+    if (kwp <= NZU.baseKwp) return NZU.baseAmount + kwh * NZU.perKwh;
+    return NZU.baseAmount + (kwp - NZU.baseKwp) * NZU.perKwpAbove + kwh * NZU.perKwh;
+  }
+
+  function update() {
+    var byt = parseInt(document.getElementById("sliderByt").value);
+    var kwp = parseFloat(document.getElementById("sliderKwp").value);
+    var kwh = parseFloat(document.getElementById("sliderKwh").value);
+
+    var maxKwp = byt * NZU.maxKwpPerUnit;
+    var unitCap = Math.min(byt * NZU.maxPerUnit, NZU.maxTotal);
+    var overKwp = kwp > maxKwp;
+
+    // Update slider fills
+    document.getElementById("fillByt").style.width = ((byt - 2) / 98 * 100) + "%";
+    document.getElementById("fillKwp").style.width = ((kwp - 5) / 295 * 100) + "%";
+    document.getElementById("fillKwp").classList.toggle("over", overKwp);
+    document.getElementById("fillKwh").style.width = (kwh / 200 * 100) + "%";
+
+    document.getElementById("valByt").textContent = byt + " BJ";
+    document.getElementById("valKwp").textContent = fmtKwp(kwp);
+    document.getElementById("valKwh").textContent = kwh === 0 ? "bez baterie" : kwh + " kWh";
+    document.getElementById("hintKwp").textContent = "max pro " + byt + " BJ: " + fmtKwp(maxKwp);
+    document.getElementById("statMaxKwp").innerHTML = fmtKwp(maxKwp) + "<span class='stat-unit'></span>";
+
+    var heroNum = document.getElementById("heroNum");
+    var heroSub = document.getElementById("heroSub");
+    var alertCap = document.getElementById("alertCap");
+    var alertErr = document.getElementById("alertErr");
+
+    alertCap.classList.remove("visible");
+    alertErr.classList.remove("visible");
+
+    var raw = calcRaw(kwp, kwh);
+    var capped = raw > unitCap;
+    var amount = Math.min(raw, unitCap);
+    var cappedByWhat = raw > NZU.maxTotal ? "celkový strop 4 mil. Kč" : "strop " + fmt(unitCap) + " Kč (" + byt + " BJ × 250 000)";
+
+    if (overKwp) {
+      alertErr.textContent = "⚠ Výkon FVE překračuje max. " + fmtKwp(maxKwp) + " (" + byt + " BJ × 3 kWp)";
+      alertErr.classList.add("visible");
+    }
+
+    if (capped) {
+      alertCap.textContent = "Dosažen " + cappedByWhat + " · zbývajících " + fmt(raw - amount) + " Kč bez NZÚ";
+      alertCap.classList.add("visible");
+    }
+
+    heroNum.textContent = fmt(amount);
+    heroNum.className = "hero-number" + (capped ? " capped" : "");
+
+    var term = amount > NZU.termThreshold ? 15 : 10;
+    heroSub.textContent =
+      fmtKwp(kwp) + (kwh > 0 ? " + " + kwh + " kWh" : "") +
+      " · " + byt + " BJ · splatnost max " + term + " let";
+
+    // Per-unit
+    document.getElementById("perUnit").textContent = fmt(amount / byt) + " Kč / BJ";
+
+    // Stat tiles
+    var panelAmount = calcRaw(kwp, 0);
+    var batAmount = kwh * NZU.perKwh;
+    var panelCapped = Math.min(panelAmount, unitCap);
+
+    document.getElementById("statPanels").innerHTML =
+      fmt(panelCapped) + "<span class='stat-unit'>Kč</span>";
+    document.getElementById("statBattery").innerHTML =
+      (kwh > 0 ? fmt(Math.max(0, amount - panelCapped)) : "0") + "<span class='stat-unit'>Kč</span>";
+    document.getElementById("statTerm").innerHTML =
+      term + "<span class='stat-unit'>let</span>";
+  }
+
+  document.getElementById("sliderByt").addEventListener("input", update);
+  document.getElementById("sliderKwp").addEventListener("input", update);
+  document.getElementById("sliderKwh").addEventListener("input", update);
+  update();
+</script>
+</body>
+</html>
