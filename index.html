@@ -233,6 +233,10 @@
     <span class="per-unit-label">Na bytovou jednotku</span>
     <span class="per-unit-value" id="perUnit">—</span>
   </div>
+  <div class="per-unit">
+    <span class="per-unit-label">Měsíční splátka / BJ</span>
+    <span class="per-unit-value" id="perMonthly">—</span>
+  </div>
 
   <div class="stats">
     <div class="stat">
@@ -402,6 +406,9 @@
       " · " + byt + " BJ · splatnost max " + term + " let";
 
     document.getElementById("perUnit").textContent = fmt(amount / byt) + " Kč / BJ";
+
+    var monthly = Math.round((amount / byt) / (term * 12));
+    document.getElementById("perMonthly").textContent = fmt(monthly) + " Kč / měsíc";
 
     var panelCapped = Math.min(calcRaw(kwp, 0), unitCap);
     document.getElementById("statPanels").innerHTML  = fmt(panelCapped) + "<span class='stat-unit'>Kč</span>";
